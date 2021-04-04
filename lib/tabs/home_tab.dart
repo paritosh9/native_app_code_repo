@@ -2,74 +2,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nativeapp/Screens/login_page.dart';
-import 'package:nativeapp/Widgets/bottom_tabs.dart';
-import 'package:nativeapp/tabs/OrdersTab.dart';
-import 'package:nativeapp/tabs/SearchTab.dart';
-import 'package:nativeapp/tabs/home_tab.dart';
 
 import '../constants.dart';
 
-
-
-class HomePage extends StatefulWidget {
+class HomeTab extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeTabState createState() => _HomeTabState();
 }
 
-class _HomePageState extends State<HomePage> {
-
+class _HomeTabState extends State<HomeTab> {
   User user = FirebaseAuth.instance.currentUser;
-
-  PageController _tabsPageController;
-  int _selectedTab = 0;
-
-  @override
-  void initState() {
-    _tabsPageController = PageController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _tabsPageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: PageView(
-                controller: _tabsPageController,
-                onPageChanged: (num) {
-                  setState(() {
-                    _selectedTab = num;
-                  });
-                },
-                children: [
-                  HomeTab(),
-                  SearchTab(),
-                  OrdersTab(),
-                ],
-              ),
-            ),
-            BottomTabs(
-              selectedTab: _selectedTab,
-              tabPressed: (num) {
-                _tabsPageController.animateToPage(
-                    num,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeOutCubic);
-              },
-            ),
-          ],
-        ),
-    );
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-    /*
+    return FutureBuilder<DocumentSnapshot>(
+      future: users.doc(user.uid).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data = snapshot.data.data();
           return Scaffold(
             body: Center(
               child: Column(
@@ -112,8 +69,9 @@ class _HomePageState extends State<HomePage> {
           //return Text("Full Name: ${data['Name']} ${data['last_name']}");
 
         }
-        */
-        return Scaffold();
 
+        return Scaffold();
+      },
+    );
   }
 }

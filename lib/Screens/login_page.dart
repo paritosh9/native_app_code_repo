@@ -12,6 +12,8 @@ import 'package:nativeapp/Widgets/custom_input.dart';
 import 'package:nativeapp/constants.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
+import 'ForgotPassword.dart';
+
 
 FirebaseAuth auth = FirebaseAuth.instance;
 final googleSignIn = GoogleSignIn();
@@ -243,7 +245,21 @@ class _LoginPageState extends State<LoginPage> {
                       _submitForm();
                     },
                     isLoading: _loginFormLoading,
+                  ),
+                  FlatButton(
+                    child: Text("Forgot Password ?",
+                    style: TextStyle(color: Colors.black)
+                    ),
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPassword()
+                        ),
+                      );
+                    },
                   )
+
                 ],
               ),
               Container(
@@ -272,7 +288,7 @@ class _LoginPageState extends State<LoginPage> {
                   highlightedBorderColor: Colors.black,
                   borderSide: BorderSide(color: Colors.black),
                   textColor: Colors.black,
-                  icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.red),
+                  icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
                   onPressed: handleLogin,
                 ),
               ),

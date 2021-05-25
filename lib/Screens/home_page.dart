@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Expanded(
               child: PageView(
+                physics: NeverScrollableScrollPhysics(),
                 controller: _tabsPageController,
                 onPageChanged: (num) {
                   setState(() {

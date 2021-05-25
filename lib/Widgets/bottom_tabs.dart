@@ -84,7 +84,7 @@ class BottomTabBtn extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.symmetric(
-          vertical: 28.0,
+          vertical: 14.0,
           horizontal: 24.0,
         ),
         decoration: BoxDecoration(
